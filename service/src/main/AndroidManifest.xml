@@ -15,11 +15,13 @@
             android:name=".ClashService"
             android:exported="false"
             android:label="@string/clash_for_android"
+            android:foregroundServiceType="specialUse"
             android:process=":background" />
         <service
             android:name=".TunService"
             android:exported="false"
             android:label="@string/clash_for_android"
+            android:foregroundServiceType="specialUse"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:process=":background">
             <intent-filter>
@@ -29,10 +31,12 @@
         <service
             android:name=".RemoteService"
             android:exported="false"
+            android:foregroundServiceType="specialUse"
             android:process=":background" />
         <service
             android:name=".ProfileWorker"
             android:exported="false"
+            android:foregroundServiceType="specialUse"
             android:process=":background" />
 
         <provider
