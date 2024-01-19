@@ -3,6 +3,8 @@ package yos.clash.material.service.clash.module
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -47,7 +49,14 @@ class StaticNotificationModule(service: Service) : Module<Unit>(service) {
                 .setContentText(service.getText(R.string.running))
                 .build()
 
-            service.startForeground(R.id.nf_clash_status, notification)
+            if (Build.VERSION.SDK_INT >= 34) {
+                service.startForeground(
+                    R.id.nf_clash_status, notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                )
+            } else {
+                service.startForeground(R.id.nf_clash_status, notification)
+            }
         }
     }
 
@@ -74,7 +83,14 @@ class StaticNotificationModule(service: Service) : Module<Unit>(service) {
                     .setContentTitle(service.getText(R.string.loading))
                     .build()
 
-            service.startForeground(R.id.nf_clash_status, notification)
+            if (Build.VERSION.SDK_INT >= 34) {
+                service.startForeground(
+                    R.id.nf_clash_status, notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                )
+            } else {
+                service.startForeground(R.id.nf_clash_status, notification)
+            }
         }
     }
 }

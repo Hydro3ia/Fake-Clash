@@ -3,6 +3,8 @@ package yos.clash.material.service.clash.module
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
@@ -64,7 +66,14 @@ class DynamicNotificationModule(service: Service) : Module<Unit>(service) {
             )
             .build()
 
-        service.startForeground(R.id.nf_clash_status, notification)
+        if (Build.VERSION.SDK_INT >= 34) {
+            service.startForeground(
+                R.id.nf_clash_status, notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+            )
+        } else {
+            service.startForeground(R.id.nf_clash_status, notification)
+        }
     }
 
     override suspend fun run() = coroutineScope {

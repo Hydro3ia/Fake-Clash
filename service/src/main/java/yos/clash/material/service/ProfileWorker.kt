@@ -2,7 +2,9 @@ package yos.clash.material.service
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
@@ -121,7 +123,14 @@ class ProfileWorker : BaseService() {
             .setOnlyAlertOnce(true)
             .build()
 
-        startForeground(R.id.nf_profile_worker, notification)
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(
+                R.id.nf_profile_worker, notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+            )
+        } else {
+            startForeground(R.id.nf_profile_worker, notification)
+        }
     }
 
     private suspend inline fun processing(name: String, block: () -> Unit) {
