@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/item_text_margin"
                 android:max="100"
-                android:progress="@{profile.moreInfo.totalBase == 0 ? 0 : I18nKt.progress(profile.moreInfo.uploadBase,profile.moreInfo.downloadBase)}" />
+                android:progress="@{profile.moreInfo.totalBase == 0 ? 0 : I18nKt.progress(profile.moreInfo.uploadBase + profile.moreInfo.downloadBase,profile.moreInfo.totalBase)}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
