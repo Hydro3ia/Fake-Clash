@@ -6,17 +6,27 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.os.IInterface
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.github.kr328.clash.core.model.LogMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import yos.clash.material.common.compat.getColorCompat
 import yos.clash.material.common.compat.pendingIntentFlags
 import yos.clash.material.common.log.Log
 import yos.clash.material.common.util.intent
-import com.github.kr328.clash.core.model.LogMessage
 import yos.clash.material.log.LogcatCache
 import yos.clash.material.log.LogcatWriter
 import yos.clash.material.service.RemoteService
@@ -24,8 +34,6 @@ import yos.clash.material.service.remote.ILogObserver
 import yos.clash.material.service.remote.IRemoteService
 import yos.clash.material.service.remote.unwrap
 import yos.clash.material.util.logsDir
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import java.io.IOException
 
 class LogcatService : Service(), CoroutineScope by CoroutineScope(Dispatchers.Default), IInterface {
@@ -151,7 +159,17 @@ class LogcatService : Service(), CoroutineScope by CoroutineScope(Dispatchers.De
             )
             .build()
 
-        startForeground(R.id.nf_logcat_status, notification)
+        // startForeground(R.id.nf_logcat_status, notification)
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(
+                R.id.nf_logcat_status,
+                notification,
+                FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+            )
+        } else {
+            startForeground(R.id.nf_logcat_status, notification)
+        }
+        // Adapt to Android 14
     }
 
     companion object {

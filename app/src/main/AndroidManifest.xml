@@ -167,6 +167,7 @@
             android:label="@string/clash_logcat" />
         <service
             android:name=".TileService"
+            android:foregroundServiceType="specialUse"
             android:exported="true"
             android:icon="@drawable/ic_logo_service"
             android:label="@string/launch_name"

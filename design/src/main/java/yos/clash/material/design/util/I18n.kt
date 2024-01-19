@@ -81,3 +81,7 @@ fun Long.toBytesString(): String {
             "$this Bytes"
     }
 }
+
+fun progress(used: Long, total: Long): Int {
+    return ((used.toFloat() / total.toFloat()) * 100).toInt()
+}
